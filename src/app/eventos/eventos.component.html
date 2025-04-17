@@ -1,0 +1,30 @@
+<h2>Exemplos de Event Listeners</h2>
+
+<!-- Evento Click -->
+<button (click)="onClick()">Clique Aqui</button>
+<p>{{ mensagemClick }}</p>
+
+<!-- Evento Input -->
+<input type="text" (input)="onInput($event)" placeholder="Digite algo..." />
+<p>Você digitou: {{ valorDigitado }}</p>
+
+<!-- Evento Keyup -->
+<input type="text" (keyup.enter)="onEnterPress()" placeholder="Pressione Enter" />
+<p>{{ mensagemEnter }}</p>
+
+<!-- Evento Mouseover -->
+<div (mouseover)="onMouseOver()" style="padding: 10px; background-color: lightblue;">
+  Passe o mouse aqui
+</div>
+<p>{{ mensagemMouseOver }}</p>
+
+<!-- Evento Submit com ngSubmit -->
+<form (ngSubmit)="onFormSubmit()" #meuForm="ngForm">
+  <input name="nome" [(ngModel)]="nome" required />
+  <button type="submit">Enviar</button>
+</form>
+@if (mensagemForm) {
+  <p>Mensagem do Formulário: {{ mensagemForm }}</p>
+} @else {
+  <p>Preencha o formulário e clique em Enviar.</p>
+}

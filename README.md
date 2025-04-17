@@ -1,59 +1,145 @@
-# EventosDemo
+# 📘 Tutorial: Usando Event Listeners no Angular 19
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.8.
+## 🎯 Objetivo
 
-## Development server
+- Compreender como lidar com eventos no Angular 19 utilizando o template syntax.
+- Demonstrar exemplos de eventos comuns: `click`, `input`, `keyup`, `mouseover`, `submit`, etc.
+- Aplicar os conceitos em componentes e formulários.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## ✅ Pré-requisitos
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Angular 19 instalado e projeto criado (`ng new eventos-demo`)
+- Um componente criado (`ng generate component eventos`)
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🧩 Passo 1: Criar o componente
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+No terminal, dentro do seu projeto:
 
 ```bash
-ng generate --help
+ng generate component eventos
 ```
 
-## Building
+---
 
-To build the project run:
+## 🖥️ Passo 2: Template HTML com Event Listeners
 
-```bash
-ng build
+Abra o arquivo `eventos.component.html` e adicione o seguinte conteúdo:
+
+```html
+<h2>Exemplos de Event Listeners</h2>
+
+<!-- Evento Click -->
+<button (click)="onClick()">Clique Aqui</button>
+<p>{{ mensagemClick }}</p>
+
+<!-- Evento Input -->
+<input type="text" (input)="onInput($event)" placeholder="Digite algo..." />
+<p>Você digitou: {{ valorDigitado }}</p>
+
+<!-- Evento Keyup -->
+<input type="text" (keyup.enter)="onEnterPress()" placeholder="Pressione Enter" />
+<p>{{ mensagemEnter }}</p>
+
+<!-- Evento Mouseover -->
+<div (mouseover)="onMouseOver()" style="padding: 10px; background-color: lightblue;">
+  Passe o mouse aqui
+</div>
+<p>{{ mensagemMouseOver }}</p>
+
+<!-- Evento Submit com ngSubmit -->
+<form (ngSubmit)="onFormSubmit()" #meuForm="ngForm">
+  <input name="nome" [(ngModel)]="nome" required />
+  <button type="submit">Enviar</button>
+</form>
+@if (mensagemForm) {
+  <p>Mensagem do Formulário: {{ mensagemForm }}</p>
+} @else {
+  <p>Preencha o formulário e clique em Enviar.</p>
+}
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## 🧠 Passo 3: Lógica no Componente
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Edite o arquivo `eventos.component.ts`:
 
-```bash
-ng test
+```ts
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-eventos',
+  imports: [FormsModule],
+  templateUrl: './eventos.component.html',
+  styleUrl: './eventos.component.scss'
+})
+export class EventosComponent {
+  mensagemClick = '';
+  valorDigitado = '';
+  mensagemEnter = '';
+  mensagemMouseOver = '';
+  mensagemForm = '';
+  nome = '';
+
+  onClick() {
+    this.mensagemClick = 'Você clicou no botão!';
+  }
+
+  onInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.valorDigitado = input.value;
+  }
+
+  onEnterPress() {
+    this.mensagemEnter = 'Você pressionou Enter!';
+  }
+
+  onMouseOver() {
+    this.mensagemMouseOver = 'Mouse passou sobre o elemento!';
+  }
+
+  onFormSubmit() {
+    this.mensagemForm = `Formulário enviado com o nome: ${this.nome}`;
+  }
+}
 ```
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
+## 🧪 Passo 4: Exibir o componente
 
-```bash
-ng e2e
+No `app.component.ts`, adicione:
+
+```ts
+import { EventosComponent } from './eventos/eventos.component';
+
+...
+
+  imports: [RouterOutlet, EventosComponent],
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+No `app.component.html`, adicione:
 
-## Additional Resources
+```html
+<app-eventos></app-eventos>
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
+
+## 💡 Dicas Adicionais
+
+- Use `$event` para acessar o evento original do DOM.
+- Combine com `[(ngModel)]` para capturar e exibir valores dinamicamente.
+- Use controle de fluxo como `@if` para exibir mensagens condicionais após eventos.
+
+---
+
+## 🧼 Conclusão
+
+Este tutorial mostrou como usar os principais **event listeners no Angular 19**, facilitando a **interação com o usuário** de forma reativa. Os eventos são tratados de maneira declarativa e integrada com o template.
+
